@@ -1,0 +1,19 @@
+# Configurações de ambiente (Segurança)
+.env
+
+# Ambientes virtuais Python
+venv/
+.venv/
+env/
+
+# Arquivos compilados e cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos gerados pelo script (Scripts SQL baixados)
+US#*.sql
+
+# Pastas de IDEs
+.vscode/
+.idea/
