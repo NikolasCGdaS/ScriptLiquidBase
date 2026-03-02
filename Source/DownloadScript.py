@@ -10,7 +10,10 @@ class DownloadScript:
         self.org = org
         self.base_url = f"https://dev.azure.com/{org}"
         self.auth = HTTPBasicAuth('', self.pat)
+        self.download_folder = Path(__file__).parent.parent / "Downloads"
+        
         print(f"Classe inicializada para a organização: {org}")
+        
 
     # Método para baixar o script da tarefa
     def download_task_script(self, project, task_id):
@@ -41,15 +44,17 @@ class DownloadScript:
                     file_name = f"US#{task_id}_{index}.sql"
                 else:
                     file_name = f"US#{task_id}.sql"
+
+                full_path = self.download_folder / file_name
                 
                 print(f"Downloading: {file_name}")
                 file_response = requests.get(attachment_url, auth=self.auth)
                 file_response.raise_for_status()
 
-                with open(file_name, 'wb') as f:
+                with open(full_path, 'wb') as f:
                     f.write(file_response.content)
                 
-                downloaded_files.append(file_name)
+                downloaded_files.append(str(full_path.absolute()))
 
             return downloaded_files
            
