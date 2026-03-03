@@ -31,34 +31,44 @@ def executar_processo():
     if not task_id.isdigit():
         print("Error: Task ID must contain only numbers.")
         return
+    
+    print("-"*30)
 
     # Inicializa a classe DownloadScript
     download_script = DownloadScript(pat=pat, org=org)
-
-    print(f"Searching for task #{task_id}...")
 
     files_list = download_script.download_task_script(
         project=project, 
         task_id=task_id
     )
 
+    print("-"*30)
+
     if files_list:
         for file in files_list:
             FileEditor.script_formatting(file)
-            print(f"Processed: {Path(file).absolute()}")
-    
+        print(f"Script formatting completed for {len(files_list)} files.")
+
     else:
         print("No .sql files found to process.")
         return False
     
-    GitManager.prepare_repository(dest_path, homol_branch)
+    print("-"*30)
+    
+    GitManager.prepare_repository(dest_path, homol_branch, "homologation")
+
+    print("-"*30)
+
+    GitManager.prepare_repository(dest_path, task_id, "new_homologation", "pa")
+
+    print("-"*30)
 
     moved_files = MoveScript.move_to(
         source_files=files_list, 
         destination_path=dest_path,
         team_name=team
         )
-
+    
     if moved_files:
         print(f"Successfully moved {len(moved_files)} files to {dest_path}/{team}/{datetime.now().strftime("%Y")}/{datetime.now().strftime("%m")}")
     else:

@@ -18,8 +18,6 @@ class FileEditor:
 
             path.write_text(new_content, encoding='utf-8')
 
-            print(f"Script formatting completed.")
-
             return True
         
         except Exception as e:

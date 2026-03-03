@@ -30,15 +30,12 @@ class MoveScript:
 
                 if src.exists():
                     destination = path_final/src.name
-
-                    print(f"Moving: {src.name} to {path_final}")
-
                     shutil.move(str(src), str(destination))
                     files.append(str(destination))
+
                 else:
                     print(f"Warning: File not found: {file_path}")
 
-            print(f"Succesfully moved {len(files)} files.")
             return files
         
         except Exception as e:

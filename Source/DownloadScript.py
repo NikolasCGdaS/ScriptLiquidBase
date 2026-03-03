@@ -12,9 +12,6 @@ class DownloadScript:
         self.auth = HTTPBasicAuth('', self.pat)
         self.download_folder = Path(__file__).parent.parent / "Downloads"
         
-        print(f"Classe inicializada para a organização: {org}")
-        
-
     # Método para baixar o script da tarefa
     def download_task_script(self, project, task_id):
         url_task = f"{self.base_url}/{project}/_apis/wit/workitems/{task_id}?$expand=relations&api-version=7.1"
