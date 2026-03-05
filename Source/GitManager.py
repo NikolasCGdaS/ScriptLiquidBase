@@ -86,3 +86,22 @@ class GitManager:
         except Exception as e:
             print(f"Unexpected error on GitManager.pull_changes: {e}")
             return False
+        
+    @staticmethod
+    def push_changes(repo_path, task_id, team_name):
+        try:
+            full_branch = f"{team_name}/{task_id}"
+            print(f"Pushing changes to remote in: {repo_path}")
+            subprocess.run(
+                ["git", "push", "--set-upstream", "origin", full_branch], 
+                cwd=repo_path, 
+                check=True
+            )
+            return True
+        
+        except subprocess.CalledProcessError as e:
+            print(f"Error during Git push: {e}")
+            return False
+        except Exception as e:
+            print(f"Unexpected error on GitManager.push_changes: {e}")
+            return False

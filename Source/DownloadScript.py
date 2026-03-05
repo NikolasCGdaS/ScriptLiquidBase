@@ -19,7 +19,7 @@ class DownloadScript:
         
         try:
             response = requests.get(url_task, auth=self.auth)
-            response.raise_for_status()  # Verifica se a requisição foi bem-sucedida
+            response.raise_for_status()
             data = response.json()
 
             relations = data.get('relations', [])
