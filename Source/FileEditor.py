@@ -26,6 +26,9 @@ class FileEditor:
         
     @staticmethod
     def verify_header(file_path):
+        if not file_path.lower().endswith('.sql'):
+            print(f"Ignoring non-SQL file: {file_path}")
+            return True
         try:
             with open(file_path, 'r', encoding='utf-8') as file:
                 lines = [file.readline().strip().lower() for _ in range(3)]

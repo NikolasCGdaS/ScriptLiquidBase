@@ -28,29 +28,16 @@ class MoveScript:
 
 
     @staticmethod
-    def move_to(file_path, destination_path, task_id):
+    def move_to(origin_folder, destination_folder, task_id):
 
         task_id_str = str(task_id)
+        origin = Path(origin_folder)
+        destination = Path(destination_folder)
 
-        try:
-            src = Path(file_path)
-            dest_dir = Path(destination_path)
-
-            if src.exists() and task_id_str in src.name:
-                destination = dest_dir/src.name
-
-                print(f"Moving: {src.name} -> {dest_dir}")
-                shutil.move(str(src), str(destination))
-                return str(destination)
-            
-            if not src.exists():
-                print(f"⚠️ Warning: File not found: {file_path}")
-
-            elif task_id_str not in src.name:
-                print(f"⏭️ Skipping: '{src.name}' (ID {task_id_str} not found in name)")
-            
-            return None
-        
-        except Exception as e:
-            print(f"Unexpected error while moving file {file_path}: {e}")
-            return []
+        for item in origin.iterdir():
+            if item.is_file() and str(task_id) in item.name:
+                try:
+                    shutil.move(str(item), str(destination / item.name))
+                    print(f"Sucess moving {item.name} to {destination}")
+                except Exception as e:
+                    print(f"Erro ao mover {item.name}: {e}")

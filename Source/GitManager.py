@@ -4,7 +4,15 @@ from unittest import case
 
 class GitManager:
     @staticmethod
-    def prepare_repository(repo_path, branch_name, branch_type, team_name=None):
+    def setup_branch(environment, task_id, team_name):
+        if environment == "homologation":
+            return f"{team_name}/{task_id}"
+        if environment == "production":
+            return f"{team_name}/{task_id}_prod"
+        return print("Error: Invalid environment specified for branch setup.")
+
+    @staticmethod
+    def prepare_repository(repo_path, branch_name, new_branch=0):
         try:
             if not os.path.exists(repo_path):
                 print(f"Error: The path {repo_path} does not exist.")
@@ -12,26 +20,11 @@ class GitManager:
 
             print(f"Accessing repository on: {repo_path}")
 
-            match branch_type:
-                case "homologation" | "production":
-                    print(f"Checkout to branch {branch_name}")
-                    subprocess.run(["git", "checkout", branch_name], cwd=repo_path, check=True)
-                    if not GitManager.pull_changes(repo_path):
-                        return False
-
-                case "new_homologation" | "new_production":
-                    if not team_name:
-                        raise ValueError(f"O parâmetro 'team_name' é obrigatório para '{branch_type}'")
-                    
-                    suffix = "_prod" if branch_type == "new_production" else ""
-                    full_name = f"{team_name}/{branch_name}{suffix}"
-                    
-                    print(f"Creating branch {full_name} based on {branch_type.split('_')[1]}")
-                    subprocess.run(["git", "checkout", "-b", full_name], cwd=repo_path, check=True)
-                    
-                case _:
-                    raise ValueError(f"Invalid branch type '{branch_type}' provided.")
-                
+            if new_branch:
+                subprocess.run(["git", "checkout", "-B", branch_name], cwd=repo_path, check=True)
+            else:
+                subprocess.run(["git", "checkout", branch_name], cwd=repo_path, check=True)                
+            
             return True
         
         except subprocess.CalledProcessError as e:
@@ -88,12 +81,11 @@ class GitManager:
             return False
         
     @staticmethod
-    def push_changes(repo_path, task_id, team_name):
+    def push_changes(repo_path, branch_name):
         try:
-            full_branch = f"{team_name}/{task_id}"
             print(f"Pushing changes to remote in: {repo_path}")
             subprocess.run(
-                ["git", "push", "--set-upstream", "origin", full_branch], 
+                ["git", "push", "--set-upstream", "origin", branch_name], 
                 cwd=repo_path, 
                 check=True
             )
