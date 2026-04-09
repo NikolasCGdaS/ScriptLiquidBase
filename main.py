@@ -112,12 +112,12 @@ def executar_processo():
 
         for file in script_destination.iterdir():
             if FileEditor.verify_header(file):
-                print(f"{Path(file).name}: Header verified.")
+                print(f"{file.name}: Header verified.")
             else:
-                print(f"{Path(file).name}: Missing or invalid header at {file}")
+                print(f"{file.name}: Missing or invalid header at {file}")
                 all_ok = False
         
-        if all_ok:
+        if all_ok: 
             print("All files have the required header. Process completed successfully!")
             MoveScript.move_to(script_destination, download_folder, task_id)
 

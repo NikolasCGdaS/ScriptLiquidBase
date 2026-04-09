@@ -26,7 +26,7 @@ class FileEditor:
         
     @staticmethod
     def verify_header(file_path):
-        if not file_path.lower().endswith('.sql'):
+        if file_path.suffix.lower() != '.sql':
             print(f"Ignoring non-SQL file: {file_path}")
             return True
         try:
