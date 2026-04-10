@@ -66,15 +66,7 @@ def executar_processo():
 
     print("-"*30)
 
-    input("Pressione Enter para continuar para o fluxo de produção...")
-
-    print("-"*30)
-
     GitManager.prepare_repository(proj_path, new_branch_from_homol, 1)
-
-    print("-"*30)
-
-    input("Pressione Enter para continuar para o fluxo de produção...")
 
     print("-"*30)
 
@@ -84,15 +76,7 @@ def executar_processo():
 
     print("-"*30)
 
-    input("Pressione Enter para continuar para o fluxo de produção...")
-
-    print("-"*30)
-
     GitManager.commit_changes(proj_path, task_id)
-
-    print("-"*30)
-
-    input("Pressione Enter para continuar para o fluxo de produção...")
 
     print("-"*30)
 
@@ -121,7 +105,7 @@ def executar_processo():
             print("All files have the required header. Process completed successfully!")
             MoveScript.move_to(script_destination, download_folder, task_id)
 
-            input("Pressione Enter para continuar para o fluxo de produção...")
+            
             
             GitManager.prepare_repository(proj_path, prod_branch)
             GitManager.pull_changes(proj_path)
@@ -134,7 +118,7 @@ def executar_processo():
 
             MoveScript.move_to(download_folder, script_destination, task_id)
 
-            input("Pressione Enter para continuar para o fluxo de produção...")
+            
 
             GitManager.commit_changes(proj_path, task_id)
             GitManager.push_changes(proj_path, new_branch_from_prod)
